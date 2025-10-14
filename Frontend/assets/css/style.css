@@ -10825,3 +10825,33 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+
+
+
+
+
+
+
+.card img { aspect-ratio: 4 / 3; object-fit: cover; }
+.object-fit-cover { object-fit: cover; }
+
+
+
+
+#productGrid .card-img-top {
+  height: 320px;         
+  object-fit: cover;
+}
+
+.filter-btn.active {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+
+#productGrid img:hover {
+  transform: scale(1.04);
+  transition: transform 0.3s ease;
+}
+

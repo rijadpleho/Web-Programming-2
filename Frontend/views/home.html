@@ -1,48 +1,91 @@
- 
- 
- <!-- Page Content-->
-        <div class="container px-4 px-lg-5">
-            <!-- Heading Row-->
-            <div class="row gx-4 gx-lg-5 align-items-center my-5">
-                <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg" alt="..." /></div>
-                <div class="col-lg-5">
-                    <h1 class="font-weight-light">Business Name or Tagline</h1>
-                    <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
-                    <a class="btn btn-primary" href="#!">Call to Action!</a>
-                </div>
-            </div>
-            <!-- Call to Action-->
-            <div class="card text-white bg-secondary my-5 py-4 text-center">
-                <div class="card-body"><p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p></div>
-            </div>
-            <!-- Content Row-->
-            <div class="row gx-4 gx-lg-5">
-                <div class="col-md-4 mb-5">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h2 class="card-title">Card One</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
-                        </div>
-                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h2 class="card-title">Card Two</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
-                        </div>
-                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h2 class="card-title">Card Three</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
-                        </div>
-                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
-                    </div>
-                </div>
-            </div>
+
+<section class="py-0">
+
+  
+  <div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center position-relative overflow-hidden">
+    <img src="Frontend/assets/images/shop.webp"
+     class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover opacity-25" alt="">
+
+    <div class="position-relative py-5">
+      <h1 class="display-5 fw-bold text-secondary">Welcome to IceHawks</h1>
+      <p class="lead text-dark mb-4">Your one-stop shop for premium hockey gear — sticks, skates, and more.</p>
+      <a href="#products" class="btn btn-primary btn-lg shadow-sm">Shop Now</a>
+    </div>
+  </div>
+
+  
+  <div class="container">
+    <h2 class="text-center mb-4 fw-semibold">Featured Gear</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+       <img src="Frontend/assets/images/stick.jpg" class="card-img-top" alt="Stick">
+          <div class="card-body">
+            <h5 class="card-title">Pro Carbon Stick</h5>
+            <p class="card-text text-muted small">Lightweight precision stick for elite control.</p>
+          </div>
+          
         </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+          <img src="Frontend/assets/images/skates.webp" class="card-img-top" alt="Skates">
+
+          <div class="card-body">
+            <h5 class="card-title">Elite Skates X</h5>
+            <p class="card-text text-muted small">Engineered for power, agility, and precision turns.</p>
+          </div>
+         
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+         <img src="Frontend/assets/images/helmet.webp" class="card-img-top" alt="Helmet">
+          <div class="card-body">
+            <h5 class="card-title">Shield Helmet</h5>
+            <p class="card-text text-muted small">Maximum protection with anti-fog visor system.</p>
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+ 
+  <div class="container my-5">
+    <div class="p-5 text-white text-center rounded-3" style="background: linear-gradient(135deg, #0d6efd, #012c5c);">
+      <h2 class="fw-bold mb-2">Limited-Time Offer</h2>
+      <p class="mb-3">Get 15% off all sticks this week only!</p>
+      <a href="#sticks" class="btn btn-light btn-lg fw-semibold">
+  Shop Sticks <i class="bi bi-arrow-right"></i>
+</a>
+    </div>
+  </div>
+
+
+  <div class="container my-5">
+  <div class="row justify-content-center align-items-center text-center g-4">
+    
+    <div class="col-md-4">
+      <img src="Frontend/assets/images/igrac.webp"
+           class="img-fluid rounded shadow-sm" alt="Hockey gear">
+    </div>
+
+    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+      <h3 class="fw-bold mb-3">Need An Account? Make One Here In 2 Minutes!</h3>
+      <p class="text-secondary mx-auto" style="max-width: 520px;">
+        We take pride in offering exceptional value and building lasting relationships with our customers.
+        Registered members enjoy exclusive discounts and special deals.
+      </p>
+      <a href="#register" class="btn btn-outline-primary mt-2">Register Here</a>
+    </div>
+
+  </div>
+</div>
+
+
+</section>
