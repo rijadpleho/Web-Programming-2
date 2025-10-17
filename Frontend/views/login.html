@@ -1,0 +1,46 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-7 col-lg-5">
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <h2 class="text-center mb-3">Log In</h2>
+          <p class="text-center text-muted mb-4">Welcome back to IceHaWks.</p>
+
+       
+          <div id="loginMsg" class="alert d-none" role="alert"></div>
+
+          <form id="loginForm" novalidate>
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="loginEmail"  required />
+              
+            </div>
+
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Password</label>
+              <div class="input-group">
+                <input type="password" class="form-control" id="loginPassword" minlength="6" required />
+                
+                  <i class="bi bi-eye"></i>
+                </button>
+                
+              </div>
+            </div>
+
+            
+
+            <div class="d-grid">
+              <button class="btn btn-primary btn-lg" type="submit">Log In</button>
+            </div>
+
+            <div class="text-center mt-3">
+              <small class="text-muted">No account yet? <a href="#register">Create one</a></small>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
