@@ -3,7 +3,7 @@ class Database {
    private static $host = 'localhost';
    private static $dbName = 'icehawks_shop';
    private static $username = 'root';
-   private static $password = '';
+   private static $password = 'root';
    private static $connection = null;
 
 
