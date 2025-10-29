@@ -6,7 +6,7 @@ require_once 'dao/CartDao.php';
 require_once 'dao/CartItemDao.php';
 require_once 'dao/OrderDao.php';
 require_once 'dao/OrderItemDao.php';
-require_once 'dao/config.php'; 
+ 
 
 $userDao      = new UserDao();
 $categoryDao  = new CategoryDao();
@@ -73,7 +73,7 @@ try {
   $stmt = $db->prepare("SELECT id FROM orders WHERE user_id = :u ORDER BY id DESC LIMIT 1");
   $stmt->execute([':u'=>$userId]);
   $orderId = (int)$stmt->fetch()['id'];
-  
+
   $orderItemDao->insert([
     'order_id'   => $orderId,
     'product_id' => $productId,
