@@ -20,5 +20,36 @@ class ProductDao extends BaseDao{
         return $stmt->fetchAll();
 
     }
+
+public function insertProduct($name, $price, $category_id) {
+        $stmt = $this->connection->prepare(
+            "INSERT INTO products (name, price, category_id)
+             VALUES (:name, :price, :category_id)"
+        );
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':category_id', $category_id);
+        $stmt->execute();
+        return $this->connection->lastInsertId();
+    }
+
+    
+    public function updateProduct($id, $name, $price) {
+        $stmt = $this->connection->prepare(
+            "UPDATE products SET name = :name, price = :price WHERE id = :id"
+        );
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':price', $price);
+        return $stmt->execute();
+    }
+
+   
+    public function deleteProduct($id) {
+        $stmt = $this->connection->prepare("DELETE FROM products WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
 }
 ?>
