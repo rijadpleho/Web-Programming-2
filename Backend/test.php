@@ -6,7 +6,7 @@ require_once 'dao/CartDao.php';
 require_once 'dao/CartItemDao.php';
 require_once 'dao/OrderDao.php';
 require_once 'dao/OrderItemDao.php';
-
+require_once 'dao/config.php'; 
 
 $userDao      = new UserDao();
 $categoryDao  = new CategoryDao();
@@ -16,77 +16,84 @@ $cartItemDao  = new CartItemDao();
 $orderDao     = new OrderDao();
 $orderItemDao = new OrderItemDao();
 
+$db = Database::connect();
+$db->beginTransaction();
 
-$userDao->insert([
-   'name'     => 'John',
-   'surname'  => 'Doe',
-   'email'    => 'john@example.com',
-   'password' => password_hash('password123', PASSWORD_DEFAULT)
-]);
+try {
+  $email = 'john+'.time().'@example.com';
+  $userDao->insert([
+    'name'     => 'John',
+    'surname'  => 'Doe',
+    'email'    => $email,
+    'password' => password_hash('password123', PASSWORD_DEFAULT)
+  ]);
+  $stmt = $db->prepare("SELECT id FROM users WHERE email = :email");
+  $stmt->execute([':email'=>$email]);
+  $userId = (int)$stmt->fetch()['id'];
 
+  $catName = 'Hockey Sticks';
+  $categoryDao->insert([
+    'name'        => $catName,
+    'description' => 'Top quality ice hockey sticks for all levels'
+  ]);
+  $stmt = $db->prepare("SELECT id FROM category WHERE name = :n");
+  $stmt->execute([':n'=>$catName]);
+  $categoryId = (int)$stmt->fetch()['id'];
 
-$categoryDao->insert([
-   'name'        => 'Hockey Sticks',
-   'description' => 'Top quality ice hockey sticks for all levels'
-]);
+  $prodName = 'Bauer Vapor Stick';
+  $productDao->insert([
+    'name'        => $prodName,
+    'price'       => 219.99,
+    'category_id' => $categoryId
+  ]);
+  $stmt = $db->prepare("SELECT id FROM products WHERE name = :n AND category_id = :cid");
+  $stmt->execute([':n'=>$prodName, ':cid'=>$categoryId]);
+  $productId = (int)$stmt->fetch()['id'];
 
+  $cartDao->insert([
+    'user_id' => $userId,
+    'status'  => 'active'
+  ]);
+  $stmt = $db->prepare("SELECT id FROM carts WHERE user_id = :u AND status = 'active' ORDER BY id DESC LIMIT 1");
+  $stmt->execute([':u'=>$userId]);
+  $cartId = (int)$stmt->fetch()['id'];
 
-$productDao->insert([
-   'name'        => 'Bauer Vapor Stick',
-   'price'       => 219.99,
-   'category_id' => 1
-]);
+  $cartItemDao->insert([
+    'cart_id'    => $cartId,
+    'product_id' => $productId,
+    'quantity'   => 2
+  ]);
 
+  $total = 2 * 219.99;
+  $orderDao->insert([
+    'user_id' => $userId,
+    'status'  => 'pending',
+    'total'   => $total
+  ]);
+  $stmt = $db->prepare("SELECT id FROM orders WHERE user_id = :u ORDER BY id DESC LIMIT 1");
+  $stmt->execute([':u'=>$userId]);
+  $orderId = (int)$stmt->fetch()['id'];
+  
+  $orderItemDao->insert([
+    'order_id'   => $orderId,
+    'product_id' => $productId,
+    'quantity'   => 2
+  ]);
 
-$cartDao->insert([
-   'user_id' => 1,
-   'status'  => 'active'
-]);
+  $db->commit();
 
+  echo "<pre>";
+  echo "USERS:\n";        print_r($userDao->getAll());
+  echo "\nCATEGORIES:\n"; print_r($categoryDao->getAll());
+  echo "\nPRODUCTS:\n";   print_r($productDao->getAll());
+  echo "\nCARTS:\n";      print_r($cartDao->getAll());
+  echo "\nCART ITEMS:\n"; print_r($cartItemDao->getAll());
+  echo "\nORDERS:\n";     print_r($orderDao->getAll());
+  echo "\nORDER ITEMS:\n";print_r($orderItemDao->getAll());
+  echo "</pre>";
 
-$cartItemDao->insert([
-   'cart_id'    => 1,
-   'product_id' => 1,
-   'quantity'   => 2
-]);
-
-
-$orderDao->insert([
-   'user_id' => 1,
-   'status'  => 'pending',
-   'total'   => 439.98
-]);
-
-
-$orderItemDao->insert([
-   'order_id'   => 1,
-   'product_id' => 1,
-   'quantity'   => 2
-]);
-
-
-echo "<pre>";
-
-echo "USERS:\n";
-print_r($userDao->getAll());
-
-echo "\nCATEGORIES:\n";
-print_r($categoryDao->getAll());
-
-echo "\nPRODUCTS:\n";
-print_r($productDao->getAll());
-
-echo "\nCARTS:\n";
-print_r($cartDao->getAll());
-
-echo "\nCART ITEMS:\n";
-print_r($cartItemDao->getAll());
-
-echo "\nORDERS:\n";
-print_r($orderDao->getAll());
-
-echo "\nORDER ITEMS:\n";
-print_r($orderItemDao->getAll());
-
-echo "</pre>";
-?>
+} catch (Throwable $e) {
+  $db->rollBack();
+  http_response_code(500);
+  echo "ERROR: ".$e->getMessage();
+}
