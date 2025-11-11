@@ -37,7 +37,7 @@ class OrderDao extends BaseDao{
     {
         return $this->delete($id);
     }
-    public function getOrdersByUserId($user_id)
+    public function getByUserId($user_id)
     {
         $stmt = $this->connection->prepare(
             "SELECT * FROM orders WHERE user_id = :user_id ORDER BY id DESC"
