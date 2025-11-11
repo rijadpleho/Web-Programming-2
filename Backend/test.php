@@ -21,9 +21,6 @@ $db->beginTransaction();
 
 try {
   echo "<pre>";
- 
-
-
   $email = 'john+'.time().'@example.com';
   $userDao->insert([
     'name'     => 'John',
@@ -108,7 +105,6 @@ try {
   echo "\nORDERS:\n";     print_r($orderDao->getAll());
   echo "\nORDER ITEMS:\n";print_r($orderItemDao->getAll());
 
- 
   echo "</pre>";
 
 } catch (Throwable $e) {
