@@ -1,6 +1,6 @@
 <?php
 Flight::route('GET /users/@user_id/cart', function($user_id) {
-    Flight::json(Flight::cartService()->getOrCreateActiveCart($user_id));
+    Flight::json(Flight::cartService()->getOrCreateCart($user_id));
 });
 Flight::route('PUT /carts/@id', function($id) {
     $data = Flight::request()->data->getData();
