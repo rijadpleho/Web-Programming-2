@@ -16,6 +16,6 @@ Flight::route('PUT /orders/@id', function($id) {
     Flight::json(Flight::orderService()->update($id, $data));
 });
 Flight::route('DELETE /orders/@id', function($id) {
-    Flight::json(Flight::orderService()->delete($id));
+    Flight::json(Flight::orderService()->deleteOrderWithItems($id));
 });
 ?>
