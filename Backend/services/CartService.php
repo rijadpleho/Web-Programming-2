@@ -18,5 +18,9 @@ class CartService extends BaseService{
         ]);
         return $this->dao->getActiveByUser($user_id);
     }
+    public function delete($id) {
+    $this->dao->deleteCartItemsByCartId($id);
+    return parent::delete($id);
+}
 }
 ?>

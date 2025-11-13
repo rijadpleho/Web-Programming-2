@@ -37,15 +37,6 @@ Flight::route('GET /products/@id', function($id) {
     Flight::json(Flight::productService()->getById($id));
 });
 
-/*Flight::route('GET /products/by-category', function() {
-    $catId = Flight::request()->query['cat'] ?? null;
-    if ($catId) {
-        Flight::json(Flight::productService()->getProductsByCategory($catId));
-    } else {
-        Flight::json([]);
-    }
-});*/
-
 /**
  * @OA\Post(
  *     path="/products",

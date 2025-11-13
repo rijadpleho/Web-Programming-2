@@ -41,7 +41,7 @@ class ProductDao extends BaseDao{
     {
         return $this->delete($id);
     }
-    public function getByCategory($category_id){
+    /*public function getByCategory($category_id){
     $stmt = $this->connection->prepare("SELECT * FROM products WHERE category_id = :category_id");
     $stmt->bindParam(':category_id', $category_id);
     $stmt->execute();
@@ -55,6 +55,6 @@ public function getAllWithCategory(){
     $stmt = $this->connection->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
-}
+}*/
 }
 ?>

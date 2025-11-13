@@ -18,12 +18,12 @@ class ProductService extends BaseService{
         }
         return $this->create($data);
     }
-     public function getProductsByCategory($category_id) {
+     /*public function getProductsByCategory($category_id) {
         return $this->dao->getByCategory($category_id);
     }
 
     public function getProductsWithCategory() {
         return $this->dao->getAllWithCategory();
-    }
+    }*/
 }
 ?>
