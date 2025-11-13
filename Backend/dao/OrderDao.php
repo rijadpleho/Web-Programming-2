@@ -46,5 +46,11 @@ class OrderDao extends BaseDao{
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function deleteOrdersByUser($user_id) {
+    $stmt = $this->connection->prepare("
+        DELETE FROM orders WHERE user_id = :user_id
+    ");
+    $stmt->execute(['user_id' => $user_id]);
+}
 }
 ?>
