@@ -61,5 +61,16 @@ class CartItemDao extends BaseDao{
     ");
     $stmt->execute(['user_id' => $user_id]);
 }
+public function addItemToCart($data) {
+    $stmt = $this->connection->prepare("
+        INSERT INTO cart_items (cart_id, product_id, quantity)
+        VALUES (:cart_id, :product_id, :quantity)
+    ");
+    $stmt->bindParam(':cart_id', $data['cart_id']);
+    $stmt->bindParam(':product_id', $data['product_id']);
+    $stmt->bindParam(':quantity', $data['quantity']);
+    
+    return $stmt->execute();
+}
 }
 ?>
