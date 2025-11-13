@@ -13,7 +13,7 @@ Flight::route('GET /products/by-category', function() {
     } else {
         Flight::json([]);
     }
-});
+});////
 Flight::route('POST /products', function() {
     $data = Flight::request()->data->getData();
     Flight::json(Flight::productService()->createProduct($data));
