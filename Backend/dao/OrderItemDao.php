@@ -51,5 +51,18 @@ class OrderItemDao extends BaseDao{
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    public function deleteByOrderId($order_id) {
+    $stmt = $this->connection->prepare("DELETE FROM order_items WHERE order_id = :order_id");
+    $stmt->bindParam(':order_id', $order_id);
+    return $stmt->execute();
+}
+public function deleteOrderItemsByUser($user_id) {
+    $stmt = $this->connection->prepare("
+        DELETE oi FROM order_items oi
+        JOIN orders o ON oi.order_id = o.id
+        WHERE o.user_id = :user_id
+    ");
+    $stmt->execute(['user_id' => $user_id]);
+}
 }
 ?>

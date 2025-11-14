@@ -48,5 +48,17 @@ class CartDao extends BaseDao{
         $stmt->execute();
         return $stmt->fetch();
     }
+    public function deleteCartsByUser($user_id) {
+    $stmt = $this->connection->prepare("
+        DELETE FROM carts WHERE user_id = :user_id
+    ");
+    $stmt->execute(['user_id' => $user_id]);
+}
+public function deleteCartItemsByCartId($cart_id) {
+    $stmt = $this->connection->prepare("
+        DELETE FROM cart_items WHERE cart_id = :cart_id
+    ");
+    $stmt->execute(['cart_id' => $cart_id]);
+}
 }
 ?>
