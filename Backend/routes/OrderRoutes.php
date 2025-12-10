@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @OA\Post(
  *     path="/users/{user_id}/orders/from-cart/{cart_id}",
@@ -26,14 +27,26 @@
  * )
  */
 Flight::route('POST /users/@user_id/orders/from-cart/@cart_id', function($user_id, $cart_id) {
+
+   
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+    
+    $logged_user = Flight::get('user');
+    if ($logged_user->role === Roles::USER && $logged_user->user_id != $user_id) {
+        Flight::halt(403, "You cannot create orders for another user.");
+    }
+
     Flight::json(Flight::orderService()->createOrderFromCart($user_id, $cart_id));
 });
+
+
 
 /**
  * @OA\Get(
  *     path="/orders",
  *     tags={"orders"},
- *     summary="Get all orders",
+ *     summary="Get all orders (ADMIN only)",
  *     @OA\Response(
  *         response=200,
  *         description="List of all orders"
@@ -41,8 +54,14 @@ Flight::route('POST /users/@user_id/orders/from-cart/@cart_id', function($user_i
  * )
  */
 Flight::route('GET /orders', function() {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::orderService()->getAll());
 });
+
+
 
 /**
  * @OA\Get(
@@ -63,8 +82,21 @@ Flight::route('GET /orders', function() {
  * )
  */
 Flight::route('GET /users/@user_id/orders', function($user_id) {
+
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+    
+    $logged_user = Flight::get('user');
+    if ($logged_user->role === Roles::USER && $logged_user->user_id != $user_id) {
+        Flight::halt(403, "You cannot view another user's orders.");
+    }
+
     Flight::json(Flight::orderService()->getOrdersForUser($user_id));
 });
+
+
+
 /**
  * @OA\Get(
  *     path="/orders/{id}",
@@ -84,8 +116,14 @@ Flight::route('GET /users/@user_id/orders', function($user_id) {
  * )
  */
 Flight::route('GET /orders/@id', function($id) {
+
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     Flight::json(Flight::orderService()->getById($id));
 });
+
+
+
 /**
  * @OA\Put(
  *     path="/orders/{id}",
@@ -113,9 +151,16 @@ Flight::route('GET /orders/@id', function($id) {
  * )
  */
 Flight::route('PUT /orders/@id', function($id) {
+
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::orderService()->update($id, $data));
 });
+
+
+
 /**
  * @OA\Delete(
  *     path="/orders/{id}",
@@ -135,6 +180,11 @@ Flight::route('PUT /orders/@id', function($id) {
  * )
  */
 Flight::route('DELETE /orders/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::orderService()->deleteOrderWithItems($id));
 });
+
 ?>

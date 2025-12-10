@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @OA\Get(
  *     path="/users/{user_id}/cart",
@@ -18,8 +19,21 @@
  * )
  */
 Flight::route('GET /users/@user_id/cart', function($user_id) {
+
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+    
+    $logged_user = Flight::get('user');
+    if ($logged_user->role === Roles::USER && $logged_user->user_id != $user_id) {
+        Flight::halt(403, "You cannot view another user's cart.");
+    }
+
     Flight::json(Flight::cartService()->getOrCreateCart($user_id));
 });
+
+
+
 /**
  * @OA\Put(
  *     path="/carts/{id}",
@@ -45,9 +59,23 @@ Flight::route('GET /users/@user_id/cart', function($user_id) {
  * )
  */
 Flight::route('PUT /carts/@id', function($id) {
+
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+    
+    $logged_user = Flight::get('user');
+    $cart = Flight::cartService()->getById($id);
+
+    if ($logged_user->role === Roles::USER && $cart['user_id'] != $logged_user->user_id) {
+        Flight::halt(403, "You cannot update another user's cart.");
+    }
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::cartService()->update($id, $data));
 });
+
+
+
 /**
  * @OA\Delete(
  *     path="/carts/{id}",
@@ -67,8 +95,15 @@ Flight::route('PUT /carts/@id', function($id) {
  * )
  */
 Flight::route('DELETE /carts/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::cartService()->delete($id));
 });
+
+
+
 /**
  * @OA\Get(
  *     path="/carts",
@@ -81,8 +116,15 @@ Flight::route('DELETE /carts/@id', function($id) {
  * )
  */
 Flight::route('GET /carts', function() {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::cartService()->getAll());
 });
+
+
+
 /**
  * @OA\Get(
  *     path="/carts/{id}",
@@ -102,6 +144,17 @@ Flight::route('GET /carts', function() {
  * )
  */
 Flight::route('GET /carts/@id', function($id) {
+
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+    $logged_user = Flight::get('user');
+    $cart = Flight::cartService()->getById($id);
+
+    if ($logged_user->role === Roles::USER && $cart['user_id'] != $logged_user->user_id) {
+        Flight::halt(403, "You cannot view another user's cart.");
+    }
+
     Flight::json(Flight::cartService()->getById($id));
 });
+
 ?>

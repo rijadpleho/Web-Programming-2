@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @OA\Get(
  *     path="/orders/{order_id}/items",
@@ -18,8 +19,25 @@
  * )
  */
 Flight::route('GET /orders/@order_id/items', function($order_id) {
+
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+   
+    $logged_user = Flight::get('user');
+    if ($logged_user->role === Roles::USER) {
+        
+        $order = Flight::orderService()->getById($order_id);
+
+        if ($order['user_id'] != $logged_user->user_id) {
+            Flight::halt(403, "You cannot view another user's order items.");
+        }
+    }
+
     Flight::json(Flight::orderItemService()->getItemsForOrder($order_id));
 });
+
+
 
 /**
  * @OA\Post(
@@ -52,10 +70,17 @@ Flight::route('GET /orders/@order_id/items', function($order_id) {
  * )
  */
 Flight::route('POST /orders/@order_id/items', function($order_id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     $data['order_id'] = $order_id;
+
     Flight::json(Flight::orderItemService()->create($data));
 });
+
+
 
 /**
  * @OA\Put(
@@ -83,9 +108,15 @@ Flight::route('POST /orders/@order_id/items', function($order_id) {
  * )
  */
 Flight::route('PUT /order-items/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::orderItemService()->update($id, $data));
 });
+
+
 
 /**
  * @OA\Delete(
@@ -105,6 +136,10 @@ Flight::route('PUT /order-items/@id', function($id) {
  * )
  */
 Flight::route('DELETE /order-items/@id', function($id) {
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::orderItemService()->delete($id));
 });
+
 ?>

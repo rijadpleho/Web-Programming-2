@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+
 require_once __DIR__ . '/services/UserService.php';
 require_once __DIR__ . '/services/CategoryService.php';
 require_once __DIR__ . '/services/ProductService.php';
@@ -9,6 +10,8 @@ require_once __DIR__ . '/services/CartItemService.php';
 require_once __DIR__ . '/services/OrderService.php';
 require_once __DIR__ . '/services/OrderItemService.php';
 require_once __DIR__ . '/services/AuthService.php';
+require_once __DIR__ . '/middleware/AuthMiddleware.php';
+require_once __DIR__ . '/data/Roles.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -22,11 +25,12 @@ Flight::register('cartItemService',  'CartItemService');
 Flight::register('orderService',     'OrderService');
 Flight::register('orderItemService', 'OrderItemService');
 Flight::register('auth_service',     'AuthService');
+Flight::register('auth_middleware',  'AuthMiddleware');
 
 
 Flight::route('/*', function() {
 
-   
+
     if (
         strpos(Flight::request()->url, '/auth/login') === 0 ||
         strpos(Flight::request()->url, '/auth/register') === 0
@@ -35,27 +39,16 @@ Flight::route('/*', function() {
     }
 
     try {
-    
         $token = Flight::request()->getHeader("Authentication");
 
-        if (!$token) {
-            Flight::halt(401, "Missing authentication header");
+        if (Flight::auth_middleware()->verifyToken($token)) {
+            return TRUE;
         }
-
-      
-        $decoded = JWT::decode($token, new Key(Config::JWT_SECRET(), 'HS256'));
-
-       
-        Flight::set('user', $decoded->user);
-        Flight::set('jwt_token', $token);
-
-        return TRUE;
 
     } catch (Exception $e) {
         Flight::halt(401, $e->getMessage());
     }
 });
-
 
 require_once __DIR__ . '/routes/AuthRoutes.php';
 require_once __DIR__ . '/routes/UserRoutes.php';
