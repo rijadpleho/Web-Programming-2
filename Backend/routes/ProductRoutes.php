@@ -4,6 +4,7 @@
  *     path="/products",
  *     tags={"products"},
  *     summary="Get all products",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="Array of all products"
@@ -23,6 +24,7 @@ Flight::route('GET /products', function() {
  *     path="/products/{id}",
  *     tags={"products"},
  *     summary="Get product by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -49,6 +51,7 @@ Flight::route('GET /products/@id', function($id) {
  *     path="/products",
  *     tags={"products"},
  *     summary="Create a new product (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -78,6 +81,7 @@ Flight::route('POST /products', function() {
  *     path="/products/{id}",
  *     tags={"products"},
  *     summary="Update an existing product (ADMIN only)",
+ *      security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -113,6 +117,7 @@ Flight::route('PUT /products/@id', function($id) {
  *     path="/products/{id}",
  *     tags={"products"},
  *     summary="Delete a product by ID (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

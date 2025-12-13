@@ -5,6 +5,7 @@
  *     path="/users/{user_id}/orders/from-cart/{cart_id}",
  *     tags={"orders"},
  *     summary="Create an order from a user's cart",
+ *     security={{"ApiKeyAuth": {}}},
  *     description="Takes all items from a user's active cart and creates a new order.",
  *     @OA\Parameter(
  *         name="user_id",
@@ -47,6 +48,7 @@ Flight::route('POST /users/@user_id/orders/from-cart/@cart_id', function($user_i
  *     path="/orders",
  *     tags={"orders"},
  *     summary="Get all orders (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of all orders"
@@ -68,6 +70,7 @@ Flight::route('GET /orders', function() {
  *     path="/users/{user_id}/orders",
  *     tags={"orders"},
  *     summary="Get all orders for a specific user",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="user_id",
  *         in="path",
@@ -88,7 +91,7 @@ Flight::route('GET /users/@user_id/orders', function($user_id) {
 
     
     $logged_user = Flight::get('user');
-    if ($logged_user->role === Roles::USER && $logged_user->user_id != $user_id) {
+    if ($logged_user->role === Roles::USER && $logged_user->id != $user_id) {
         Flight::halt(403, "You cannot view another user's orders.");
     }
 
@@ -102,6 +105,7 @@ Flight::route('GET /users/@user_id/orders', function($user_id) {
  *     path="/orders/{id}",
  *     tags={"orders"},
  *     summary="Get an order by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -129,6 +133,7 @@ Flight::route('GET /orders/@id', function($id) {
  *     path="/orders/{id}",
  *     tags={"orders"},
  *     summary="Update an order",
+ *     security={{"ApiKeyAuth": {}}},
  *     description="Updates order fields such as status or total.",
  *     @OA\Parameter(
  *         name="id",
@@ -166,6 +171,7 @@ Flight::route('PUT /orders/@id', function($id) {
  *     path="/orders/{id}",
  *     tags={"orders"},
  *     summary="Delete an order",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

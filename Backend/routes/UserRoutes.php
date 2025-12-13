@@ -4,6 +4,7 @@
  *     path="/users",
  *     tags={"users"},
  *     summary="Get all users (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of all users"
@@ -23,6 +24,7 @@ Flight::route('GET /users', function() {
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Get user by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -49,6 +51,7 @@ Flight::route('GET /users/@id', function($id) {
  *     path="/users",
  *     tags={"users"},
  *     summary="Create new user (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -79,6 +82,7 @@ Flight::route('POST /users', function() {
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Update an existing user",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -115,6 +119,7 @@ Flight::route('PUT /users/@id', function($id) {
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Delete a user by ID (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

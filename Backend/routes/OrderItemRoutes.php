@@ -5,6 +5,7 @@
  *     path="/orders/{order_id}/items",
  *     tags={"order_items"},
  *     summary="Get all items for a specific order",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="order_id",
  *         in="path",
@@ -44,6 +45,7 @@ Flight::route('GET /orders/@order_id/items', function($order_id) {
  *     path="/orders/{order_id}/items",
  *     tags={"order_items"},
  *     summary="Add an item to an existing order",
+ *     security={{"ApiKeyAuth": {}}},
  *     description="Creates a new order item for the specified order ID.",
  *
  *     @OA\Parameter(
@@ -87,6 +89,7 @@ Flight::route('POST /orders/@order_id/items', function($order_id) {
  *     path="/order-items/{id}",
  *     tags={"order_items"},
  *     summary="Update an order item fully",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -123,6 +126,7 @@ Flight::route('PUT /order-items/@id', function($id) {
  *     path="/order-items/{id}",
  *     tags={"order_items"},
  *     summary="Delete an order item",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

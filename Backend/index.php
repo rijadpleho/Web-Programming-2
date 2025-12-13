@@ -11,7 +11,7 @@ require_once __DIR__ . '/services/OrderService.php';
 require_once __DIR__ . '/services/OrderItemService.php';
 require_once __DIR__ . '/services/AuthService.php';
 require_once __DIR__ . '/middleware/AuthMiddleware.php';
-require_once __DIR__ . '/data/Roles.php';
+require_once __DIR__ . '/data/roles.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -28,26 +28,16 @@ Flight::register('auth_service',     'AuthService');
 Flight::register('auth_middleware',  'AuthMiddleware');
 
 
-Flight::route('/*', function() {
-
+Flight::route('/*', function () {
 
     if (
         strpos(Flight::request()->url, '/auth/login') === 0 ||
         strpos(Flight::request()->url, '/auth/register') === 0
     ) {
-        return TRUE;
+        return true;
     }
 
-    try {
-        $token = Flight::request()->getHeader("Authentication");
-
-        if (Flight::auth_middleware()->verifyToken($token)) {
-            return TRUE;
-        }
-
-    } catch (Exception $e) {
-        Flight::halt(401, $e->getMessage());
-    }
+    return true;
 });
 
 require_once __DIR__ . '/routes/AuthRoutes.php';

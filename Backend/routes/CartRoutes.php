@@ -5,6 +5,7 @@
  *     path="/users/{user_id}/cart",
  *     tags={"carts"},
  *     summary="Get active cart for a user",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="user_id",
  *         in="path",
@@ -39,6 +40,7 @@ Flight::route('GET /users/@user_id/cart', function($user_id) {
  *     path="/carts/{id}",
  *     tags={"carts"},
  *     summary="Update an existing cart",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -81,6 +83,7 @@ Flight::route('PUT /carts/@id', function($id) {
  *     path="/carts/{id}",
  *     tags={"carts"},
  *     summary="Delete a cart by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -109,6 +112,7 @@ Flight::route('DELETE /carts/@id', function($id) {
  *     path="/carts",
  *     tags={"carts"},
  *     summary="Get all carts",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of all carts"
@@ -130,6 +134,7 @@ Flight::route('GET /carts', function() {
  *     path="/carts/{id}",
  *     tags={"carts"},
  *     summary="Get a cart by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

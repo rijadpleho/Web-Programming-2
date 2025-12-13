@@ -5,6 +5,7 @@
  *     path="/categories",
  *     tags={"categories"},
  *     summary="Get all categories",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of all product categories"
@@ -26,6 +27,7 @@ Flight::route('GET /categories', function() {
  *     path="/categories/{id}",
  *     tags={"categories"},
  *     summary="Get category by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -54,6 +56,7 @@ Flight::route('GET /categories/@id', function($id) {
  *     path="/categories",
  *     tags={"categories"},
  *     summary="Create new category",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -84,6 +87,7 @@ Flight::route('POST /categories', function() {
  *     path="/categories/{id}",
  *     tags={"categories"},
  *     summary="Fully update a category",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -120,6 +124,7 @@ Flight::route('PUT /categories/@id', function($id) {
  *     path="/categories/{id}",
  *     tags={"categories"},
  *     summary="Delete a category",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

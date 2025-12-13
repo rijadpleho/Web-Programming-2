@@ -11,7 +11,7 @@ Flight::group('/auth', function() {
      *     description="Add a new user to the database.",
      *     tags={"auth"},
      *     security={
-     *         {"ApiKey": {}}
+     *         {"ApiKeyAuth": {}}
      *     },
      *     @OA\RequestBody(
      *         description="Add new user",
