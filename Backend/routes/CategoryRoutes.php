@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @OA\Get(
  *     path="/categories",
  *     tags={"categories"},
  *     summary="Get all categories",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of all product categories"
@@ -11,13 +13,21 @@
  * )
  */
 Flight::route('GET /categories', function() {
+
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     Flight::json(Flight::categoryService()->getAll());
 });
+
+
+
 /**
  * @OA\Get(
  *     path="/categories/{id}",
  *     tags={"categories"},
  *     summary="Get category by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -32,13 +42,21 @@ Flight::route('GET /categories', function() {
  * )
  */
 Flight::route('GET /categories/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     Flight::json(Flight::categoryService()->getById($id));
 });
+
+
+
 /**
  * @OA\Post(
  *     path="/categories",
  *     tags={"categories"},
  *     summary="Create new category",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -54,14 +72,22 @@ Flight::route('GET /categories/@id', function($id) {
  * )
  */
 Flight::route('POST /categories', function() {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::categoryService()->createCategory($data));
 });
+
+
+
 /**
  * @OA\Put(
  *     path="/categories/{id}",
  *     tags={"categories"},
  *     summary="Fully update a category",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -83,14 +109,22 @@ Flight::route('POST /categories', function() {
  * )
  */
 Flight::route('PUT /categories/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::categoryService()->update($id, $data));
 });
+
+
+
 /**
  * @OA\Delete(
  *     path="/categories/{id}",
  *     tags={"categories"},
  *     summary="Delete a category",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -105,6 +139,11 @@ Flight::route('PUT /categories/@id', function($id) {
  * )
  */
 Flight::route('DELETE /categories/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::categoryService()->delete($id));
 });
+
 ?>

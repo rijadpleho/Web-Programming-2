@@ -4,6 +4,7 @@
  *     path="/products",
  *     tags={"products"},
  *     summary="Get all products",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="Array of all products"
@@ -11,6 +12,9 @@
  * )
  */
 Flight::route('GET /products', function() {
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     Flight::json(Flight::productService()->getAll());
 });
 
@@ -20,6 +24,7 @@ Flight::route('GET /products', function() {
  *     path="/products/{id}",
  *     tags={"products"},
  *     summary="Get product by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -34,14 +39,19 @@ Flight::route('GET /products', function() {
  * )
  */
 Flight::route('GET /products/@id', function($id) {
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     Flight::json(Flight::productService()->getById($id));
 });
+
 
 /**
  * @OA\Post(
  *     path="/products",
  *     tags={"products"},
- *     summary="Create a new product",
+ *     summary="Create a new product (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -58,15 +68,20 @@ Flight::route('GET /products/@id', function($id) {
  * )
  */
 Flight::route('POST /products', function() {
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::productService()->createProduct($data));
 });
+
 
 /**
  * @OA\Put(
  *     path="/products/{id}",
  *     tags={"products"},
- *     summary="Update an existing product",
+ *     summary="Update an existing product (ADMIN only)",
+ *      security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -89,14 +104,20 @@ Flight::route('POST /products', function() {
  * )
  */
 Flight::route('PUT /products/@id', function($id) {
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::productService()->update($id, $data));
 });
+
+
 /**
  * @OA\Delete(
  *     path="/products/{id}",
  *     tags={"products"},
- *     summary="Delete a product by ID",
+ *     summary="Delete a product by ID (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -111,6 +132,9 @@ Flight::route('PUT /products/@id', function($id) {
  * )
  */
 Flight::route('DELETE /products/@id', function($id) {
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::productService()->delete($id));
 });
 ?>

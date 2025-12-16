@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @OA\Get(
  *     path="/orders/{order_id}/items",
  *     tags={"order_items"},
  *     summary="Get all items for a specific order",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="order_id",
  *         in="path",
@@ -18,14 +20,32 @@
  * )
  */
 Flight::route('GET /orders/@order_id/items', function($order_id) {
+
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
+   
+    $logged_user = Flight::get('user');
+    if ($logged_user->role === Roles::USER) {
+        
+        $order = Flight::orderService()->getById($order_id);
+
+        if ($order['user_id'] != $logged_user->user_id) {
+            Flight::halt(403, "You cannot view another user's order items.");
+        }
+    }
+
     Flight::json(Flight::orderItemService()->getItemsForOrder($order_id));
 });
+
+
 
 /**
  * @OA\Post(
  *     path="/orders/{order_id}/items",
  *     tags={"order_items"},
  *     summary="Add an item to an existing order",
+ *     security={{"ApiKeyAuth": {}}},
  *     description="Creates a new order item for the specified order ID.",
  *
  *     @OA\Parameter(
@@ -52,16 +72,24 @@ Flight::route('GET /orders/@order_id/items', function($order_id) {
  * )
  */
 Flight::route('POST /orders/@order_id/items', function($order_id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     $data['order_id'] = $order_id;
+
     Flight::json(Flight::orderItemService()->create($data));
 });
+
+
 
 /**
  * @OA\Put(
  *     path="/order-items/{id}",
  *     tags={"order_items"},
  *     summary="Update an order item fully",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -83,15 +111,22 @@ Flight::route('POST /orders/@order_id/items', function($order_id) {
  * )
  */
 Flight::route('PUT /order-items/@id', function($id) {
+
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::orderItemService()->update($id, $data));
 });
+
+
 
 /**
  * @OA\Delete(
  *     path="/order-items/{id}",
  *     tags={"order_items"},
  *     summary="Delete an order item",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -105,6 +140,10 @@ Flight::route('PUT /order-items/@id', function($id) {
  * )
  */
 Flight::route('DELETE /order-items/@id', function($id) {
+
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::orderItemService()->delete($id));
 });
+
 ?>

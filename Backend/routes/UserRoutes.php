@@ -3,7 +3,8 @@
  * @OA\Get(
  *     path="/users",
  *     tags={"users"},
- *     summary="Get all users",
+ *     summary="Get all users (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="List of all users"
@@ -11,13 +12,19 @@
  * )
  */
 Flight::route('GET /users', function() {
+   
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::userService()->getAll());
 });
+
+
 /**
  * @OA\Get(
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Get user by ID",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -31,15 +38,20 @@ Flight::route('GET /users', function() {
  *     )
  * )
  */
-
 Flight::route('GET /users/@id', function($id) {
+    
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     Flight::json(Flight::userService()->getById($id));
 });
+
+
 /**
  * @OA\Post(
  *     path="/users",
  *     tags={"users"},
- *     summary="Create new user",
+ *     summary="Create new user (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -57,14 +69,20 @@ Flight::route('GET /users/@id', function($id) {
  * )
  */
 Flight::route('POST /users', function() {
+    
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::userService()->create($data));
 });
+
+
 /**
  * @OA\Put(
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Update an existing user",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -87,14 +105,21 @@ Flight::route('POST /users', function() {
  * )
  */
 Flight::route('PUT /users/@id', function($id) {
+
+   
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::userService()->update($id, $data));
 });
+
+
 /**
  * @OA\Delete(
  *     path="/users/{id}",
  *     tags={"users"},
- *     summary="Delete a user by ID",
+ *     summary="Delete a user by ID (ADMIN only)",
+ *     security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -109,6 +134,9 @@ Flight::route('PUT /users/@id', function($id) {
  * )
  */
 Flight::route('DELETE /users/@id', function($id) {
+   
+    Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+
     Flight::json(Flight::userService()->deleteUserCompletely($id));
 });
 ?>
