@@ -1,49 +1,52 @@
 var UserService = {
 
-  init: function () {
-    const token = localStorage.getItem("user_token");
-
-    if (!token) {
-      window.location.hash = "#login";
-      return;
-    }
-
-    this.generateMenuItems();
-  },
-
   initLogin: function () {
-    $("#loginForm").off("submit").on("submit", function (e) {
-      e.preventDefault();
-
+  $("#loginForm").validate({
+    rules: {
+      email: {
+        required: true,
+        email: true
+      },
+      password: {
+        required: true,
+        minlength: 6
+      }
+    },
+    messages: {
+      email: {
+        required: "Email is required",
+        email: "Enter a valid email"
+      },
+      password: {
+        required: "Password is required",
+        minlength: "Minimum 6 characters"
+      }
+    },
+    submitHandler: function (form) {
       const payload = {
         email: $("#loginEmail").val(),
         password: $("#loginPassword").val()
       };
-
       UserService.login(payload);
-    });
-  },
-
+    }
+  });
+},
   login: function (payload) {
+    $.blockUI({ message: "<h4>Logging in...</h4>" });
+
     $.ajax({
       url: "http://localhost/RijadPleho/Web-Programming-2/Backend/auth/login",
       type: "POST",
-      data: JSON.stringify(payload),
       contentType: "application/json",
-      dataType: "json",
-
+      data: JSON.stringify(payload),
       success: function (response) {
-        if (!response || !response.data || !response.data.token) {
-          alert("Login failed");
-          return;
-        }
-
         localStorage.setItem("user_token", response.data.token);
+        $.unblockUI();
         window.location.hash = "#home";
       },
-
-      error: function () {
-        alert("Invalid email or password");
+      error: function (xhr) {
+        $.unblockUI();
+        alert(xhr.responseText || "Invalid email or password");
       }
     });
   },

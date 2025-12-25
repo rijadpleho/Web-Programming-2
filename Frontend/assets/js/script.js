@@ -8,7 +8,15 @@ $(function () {
     templateDir: 'Frontend/views/',  
     pageNotFound: 'home'             
   });
-
+app.route({
+    view: "admin",
+    load: "admin.html",
+    onReady: function () {
+      if (!UserService.isAdmin()) {
+        window.location.hash = "#home";
+      }
+    }
+  });
 
 
   app.run();
