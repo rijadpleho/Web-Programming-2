@@ -57,38 +57,86 @@ var UserService = {
   },
 
   initRegister: function () {
-    $("#registerForm").off("submit").on("submit", function (e) {
-      e.preventDefault();
+
+  $("#registerForm").validate({
+    rules: {
+      regName: {
+        required: true,
+        minlength: 3
+      },
+      regEmail: {
+        required: true,
+        email: true
+      },
+      regPassword: {
+        required: true,
+        minlength: 6
+      },
+      regTerms: {
+        required: true
+      }
+    },
+
+    messages: {
+      regName: "Please enter your full name",
+      regEmail: {
+        required: "Email is required",
+        email: "Please enter a valid email"
+      },
+      regPassword: {
+        required: "Password is required",
+        minlength: "Password must be at least 6 characters"
+      },
+      regTerms: "You must accept the terms"
+    },
+
+    submitHandler: function () {
 
       const payload = {
+        name: $("#regName").val(),
         email: $("#regEmail").val(),
         password: $("#regPassword").val()
       };
 
-      console.log("REGISTER PAYLOAD:", payload);
-
       UserService.register(payload);
-    });
-  },
+    }
+  });
+},
+
 
   register: function (payload) {
-    $.ajax({
-      url: "http://localhost/RijadPleho/Web-Programming-2/Backend/auth/register",
-      type: "POST",
-      data: JSON.stringify(payload),
-      contentType: "application/json",
-      dataType: "json",
 
-      success: function () {
-        alert("Registration successful! Please log in.");
+  $("#regMsg")
+    .removeClass("d-none alert-success")
+    .addClass("alert-info")
+    .text("Creating account...");
+
+  $.ajax({
+    url: "http://localhost/RijadPleho/Web-Programming-2/Backend/auth/register",
+    type: "POST",
+    data: JSON.stringify(payload),
+    contentType: "application/json",
+    dataType: "json",
+
+    success: function () {
+      $("#regMsg")
+        .removeClass("alert-info alert-danger")
+        .addClass("alert-success")
+        .text("Account created successfully! You can now log in.");
+
+      setTimeout(() => {
         window.location.hash = "#login";
-      },
+      }, 1500);
+    },
 
-      error: function (xhr) {
-        alert(xhr.responseText || "Registration failed");
-      }
-    });
-  },
+    error: function (xhr) {
+      $("#regMsg")
+        .removeClass("alert-info")
+        .addClass("alert-danger")
+        .text(xhr.responseText || "Registration failed");
+    }
+  });
+},
 
   isAdmin: function () {
     const token = localStorage.getItem("user_token");
