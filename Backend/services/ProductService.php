@@ -11,19 +11,12 @@ class ProductService extends BaseService{
 
     public function createProduct($data){
         if(empty($data['name'])){
-            throw new Exception ("Product price must be greater than zero");
+            throw new Exception ("Product name required");
         }
         if (empty($data['price']) || $data['price'] <= 0) {
             throw new Exception("Product price must be greater than zero.");
         }
         return $this->create($data);
     }
-     /*public function getProductsByCategory($category_id) {
-        return $this->dao->getByCategory($category_id);
-    }
-
-    public function getProductsWithCategory() {
-        return $this->dao->getAllWithCategory();
-    }*/
 }
 ?>
